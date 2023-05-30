@@ -4,12 +4,18 @@ import kr.ac.kopo.guestbook.dto.GuestbookDTO;
 import kr.ac.kopo.guestbook.dto.PageRequestDTO;
 import kr.ac.kopo.guestbook.dto.PageResultDTO;
 import kr.ac.kopo.guestbook.entity.Guestbook;
+import kr.ac.kopo.guestbook.entity.QGuestbook;
 
 
 public interface GuestbookService {
     Long register(GuestbookDTO dto);
 
     PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO requestDTO);
+
+    GuestbookDTO read(Long gno);
+
+    void modify(GuestbookDTO dto);
+    void remove(Long gno);
 
     default Guestbook dtoToEntity(GuestbookDTO dto){
         Guestbook entity = Guestbook.builder()

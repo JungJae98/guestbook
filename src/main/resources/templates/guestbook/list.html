@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
   <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
     <th:block th:fragment="content">
       <h1 class="mt-4">Guest List Page</h1>
+      <a th:href="@{/guestbook/register}">
+        <button type="button" class="btn btn-outline-primary">REGISTER</button>
+      </a>
       <table class="table table-striped">
         <thead>
         <tr>
@@ -14,7 +18,11 @@
         </thead>
         <tbody>
         <tr th:each="dto: ${result.dtoList}">
-          <th scope="row">[[${dto.gno}]]</th>
+          <th scope="row">
+            <a th:href="@{/guestbook/read(gno= ${dto.gno}, page= ${result.page})}">
+              [[${dto.gno}]]
+            </a>
+          </th>
           <td>[[${dto.title}]]</td>
           <td>[[${dto.writer}]]</td>
           <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
@@ -32,14 +40,31 @@
           <a class="page-link" th:href="@{/guestbook/list(page=${result.end +1},size = ${result.size})}">Next</a>
         </li>
       </ul>
-      <div class="modal">
+<!--      <div class="modal">-->
+<!--        <div class="modal-dialog">-->
+<!--          <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--              <h5 class="modal-title">Modal Title</h5>-->
+<!--              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">-->
+<!--                <span aria-hidden="true">&times;</span>-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="modal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Title</h5>
-              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <h5 class="modal-title">[[${msg}]]</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="$('.modal').hide()"></button>
+            </div>
+            <div class="modal-body">
+              <p>Registered successfully.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >CONFIRM</button>
+<!--              <button type="button" class="btn btn-primary">Save changes</button>-->
             </div>
           </div>
         </div>
@@ -48,7 +73,7 @@
         var msg = [[${msg}]];
         console.log(msg);
         if(msg){
-          $(".modal").showModal();
+          $(".modal").show();
         }
       </script>
     </th:block>
